@@ -1,0 +1,11 @@
+{
+  "app/view/post/test.qmd": {
+    "test.html": "3539411e"
+  },
+  "app/view/post/tidytuesday-datasets-en.qmd": {
+    "tidytuesday-datasets-en.html": "934eac1c"
+  },
+  "app/view/post/en/20240702.qmd": {
+    "20240702.html": "846663da"
+  }
+}

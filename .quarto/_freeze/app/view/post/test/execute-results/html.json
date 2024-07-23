@@ -1,0 +1,17 @@
+{
+  "hash": "a8f07a6482822a1f620d5f7cd10f6451",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"TidyTuesday Datasets\"\ndate: \"2024-07-02\"\ncode-annotations: hover # turn on code annotations\neditor: visual\n---\n\n\n::: {.callout-note appearance=\"simple\"}\nLorem ipsum dolor sit amet consectetur adipiscing elit Quisque tellus urna placerat in tortor ac imperdiet sollicitudin mi Integer vel dolor mollis feugiat sem eu porttitor elit Sed aliquam urna sed placerat euismod In risus sem ornare nec malesuada eu ornare quis dui Nunc finibus fermentum sollicitudin Fusce vel imperdiet mi\n:::\n\n# Datasets\n\n::: {.prow layout-ncol=2}\n::: {.pcol}\nLorem ipsum dolor sit amet consectetur adipiscing elit Quisque tellus urna placerat in tortor ac imperdiet sollicitudin mi Integer vel dolor mollis feugiat sem eu porttitor elit Sed aliquam urna sed placerat euismod In risus sem ornare nec malesuada eu ornare quis dui Nunc finibus fermentum sollicitudin Fusce vel imperdiet mi\n:::\n::: {.pcol}\n\n\n::: {.cell lightbox='{\"group\":\"plots\",\"description\":\"This is a random ggplot\"}'}\n::: {.cell-output .cell-output-stderr}\n\n```\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n```\n\n\n:::\n\n::: {.cell-output-display}\n![](test_files/figure-html/unnamed-chunk-1-1.png){width=672}\n:::\n:::\n\n:::\n:::\n\n::: {.prow}\n\n::: {.cell .column-margin}\n\n```{.r .cell-code}\nlibrary(tidyverse)\nlibrary(palmerpenguins)\npenguins |>                                      # <1>\n  mutate(                                        # <2>\n    bill_ratio = bill_depth_mm / bill_length_mm, # <2>\n    bill_area  = bill_depth_mm * bill_length_mm  # <2>\n  ) %>%                                          # <2>\n  head() %>%                                     # <2>\n  knitr::kable()                                \n```\n\n::: {#fig-plot .cell-output-display}\n\n\n|species |island    | bill_length_mm| bill_depth_mm| flipper_length_mm| body_mass_g|sex    | year| bill_ratio| bill_area|\n|:-------|:---------|--------------:|-------------:|-----------------:|-----------:|:------|----:|----------:|---------:|\n|Adelie  |Torgersen |           39.1|          18.7|               181|        3750|male   | 2007|  0.4782609|    731.17|\n|Adelie  |Torgersen |           39.5|          17.4|               186|        3800|female | 2007|  0.4405063|    687.30|\n|Adelie  |Torgersen |           40.3|          18.0|               195|        3250|female | 2007|  0.4466501|    725.40|\n|Adelie  |Torgersen |             NA|            NA|                NA|          NA|NA     | 2007|         NA|        NA|\n|Adelie  |Torgersen |           36.7|          19.3|               193|        3450|female | 2007|  0.5258856|    708.31|\n|Adelie  |Torgersen |           39.3|          20.6|               190|        3650|male   | 2007|  0.5241730|    809.58|\n\n\n:::\n:::\n\n\n1. Take `penguins`, and then,\n2. add new columns for the bill ratio and bill area.\n:::",
+    "supporting": [
+      "test_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
