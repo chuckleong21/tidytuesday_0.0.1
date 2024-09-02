@@ -1,0 +1,86 @@
+---
+title: "TidyTuesday datasets"
+subtitle: "Creating treemaps with `{highcharter}`"
+format:
+  html:
+    css: style.css
+editor: visual
+---
+
+```{r}
+#| echo: false
+#| message: false
+library(highcharter)
+library(tidyverse)
+
+sizing <- function(file) {
+        ext <- tools::file_ext(file)
+        obj <- switch(ext, 
+                      "xlsx" = read_excel(file), 
+                      "xls" = read_excel(file), 
+                      "csv" = read_csv(file, show_col_types = F), 
+                      "rds" = read_rds(file), 
+                      warning("unrecognized file extension"))
+        size <- object.size(obj) / 1024^2
+        size
+}
+
+relabel <- function(x) {
+        if(x$level == 2) {
+                max_dim <- slice_max(filter(datasets, id == x$id), dimension)
+                vars <- pull(max_dim, variables)
+                obs <- pull(max_dim, observations)
+                list(name = paste0(
+                        "Week: ", x$name, "<br>",
+                        "Variables: ", ifelse(length(vars) != 1, vars[1], vars), "<br>",
+                        "Observations: ", ifelse(length(obs) != 1, obs[1], obs)
+                ),
+                id = x$id,
+                parent = x$parent, 
+                value = x$value,
+                level = x$level
+                )
+        } else x
+}
+```
+
+::: {.callout-note appearance="simple"}
+We will look into the insights from past datasets in `TidyTuesday` datasets and learn how to draw treemaps using the `{highcharter}` R package powered by highchart.js.
+:::
+
+# Datasets
+
+We know that there are [four datasets](https://github.com/rfordatascience/tidytuesday/tree/master/data/2024/2024-07-02)[^1] available this week. We will mainly look at the `tt_datasets` as I am interested in **how the number of columns and that of rows affect the memory size when datasets are read into R.**
+
+[^1]: tt_summary.csv, tt_urls.csv, tt_datasets.csv, tt_variables.csv
+
+```{r}
+#| label: dataset
+#| message: false
+datasets <- tidytuesdayR::tt_load(2024, 27, download_files = "tt_datasets.csv")
+head(datasets)
+```
+
+Here we define a scalable variable *dimension*, $d$: $d=n\times{m}$ where $n$ is the number of observations and $m$ is that of variables in a datasets. Then we will need to find out the object sizes when they are read into R. This is an expensive computation so here I only show the results. As we can see from the table below, column `obj_size`[^2] shows the object size of each dataset:
+
+[^2]: in MB
+
+```{r}
+#| echo: false
+datasets <- read_rds("../../../static/data/datasets.rds")
+head(datasets)
+```
+
+# Treemap Visualization
+
+Next, we could visualize the distribution of the object sizes across the years with a treemap. There are many R packages that can achieve this goal. For static plots, you have [treemap](https://r-graph-gallery.com/235-treemap-with-subgroups.html) and [ggplot2](https://www.geeksforgeeks.org/treemap-with-ggplot2-and-treemapify-in-r/). For interactive plots, you have [plotly](https://stackoverflow.com/a/72194449) and highcharter. This article will be mainly focusing on using highcharter. Highcharter is interface of highchart JS visualization library for R. Though the information provided by the highcharter documentation is helpful, the best practice is to visit the [highchart JS API reference page](https://api.highcharts.com/highcharts/) as we are building the visualization.
+
+## Understanding data structure
+
+From the highchart JS library documentation:
+
+> The data is structured as a Tree, where each point represents a node. Each node can have its own children.
+
+> The tree automatically has one node at the top representing the root node. If a point has an undefined parent, or the parent is not matching any id, the parent will be automatically set to the root node.
+
+![](images/clipboard-4013933341.png)
